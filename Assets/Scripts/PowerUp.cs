@@ -1,36 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.Events;
 using UnityEngine;
-
+using System;
 public class PowerUp : MonoBehaviour
 {
-    [SerializeField] private UnityEvent onHit;
+    public event Action<PowerUp> onPower;
+    [SerializeField]int velocidadRotacion;
+    void Update()
+    {
+        transform.Rotate(Vector3.up * velocidadRotacion * Time.deltaTime);
+    }
     private void OnCollisionEnter(Collision other)
     {
         if(other.gameObject.CompareTag("Player"))
         {
-            onHit?.Invoke();
+            this.gameObject.SetActive(false);
+            onPower?.Invoke(this);
         }
     }
 }
-
-
-/*using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Events;
-public class S3PlatformerController : MonoBehaviour
-{
-    [SerializeField] private UnityEvent onHit;
-    //Cuando el Player colisione con este objeto, se llamará el evento onHit y sus
-    métodos suscritos y se eliminará el GameObject.
-private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.gameObject.tag == "Player")
-        {
-            onHit?.Invoke();
-            Destroy(this.gameObject);
-        }
-    }
-}*/
